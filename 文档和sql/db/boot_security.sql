@@ -554,3 +554,245 @@ CREATE TABLE `t_token` (
   `updateTime` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ----------------------------
+-- Table structure for xz_account_log
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_account_log`;
+CREATE TABLE `xz_account_log` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `user_money` varchar(255) DEFAULT NULL COMMENT '用户金额',
+  `frozen_money` varchar(255) DEFAULT NULL COMMENT '冻结金额',
+  `pay_points` varchar(255) DEFAULT NULL COMMENT '支付积分',
+  `doge_money` varchar(255) DEFAULT NULL COMMENT 'DOGE',
+  `stc_currency` varchar(255) DEFAULT NULL COMMENT 'STC',
+  `contract_revenue` varchar(255) DEFAULT NULL COMMENT '智能合约收益',
+  `change_time` datetime DEFAULT NULL COMMENT '变动时间',
+  `describe` varchar(255) DEFAULT NULL COMMENT '描述',
+  `order_sn` varchar(255) DEFAULT NULL COMMENT '订单编号',
+  `order_id` int(11) DEFAULT NULL COMMENT '订单id',
+  `status` varchar(255) DEFAULT NULL COMMENT '1:购买,2:转赠(福分记录),3:充值(福分记录),4:预约/领养(福分记录),5:抢购(福分记录),6:注册(福分记录),7:未抢购成功退回(福分记录),8:智能合约收益(收益财分),9:出售财分,10:管理员操作,11:后台充值,12:团队奖,13推荐奖,15提现pig币,16提现BTC币,17后台充值财分,18后台充值福分,19后台充值doge币,20后台充值pig币,21增加智能合约收益,22增加doge币,23增加pig币',
+  `goods_id` int(11) DEFAULT NULL COMMENT '星座商品id',
+  `laststatus` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='流水日志表';
+-- ----------------------------
+-- Table structure for xz_goods
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_goods`;
+CREATE TABLE `xz_goods` (
+  `id` int(11) NOT NULL,
+  `goods_name` varchar(255) DEFAULT NULL COMMENT '星座名称',
+  `small_price` varchar(10) DEFAULT NULL COMMENT '最小价值',
+  `large_price` varchar(10) DEFAULT NULL COMMENT '最大价值',
+  `start_time` datetime DEFAULT NULL COMMENT '领养开始时间',
+  `end_time` datetime DEFAULT NULL COMMENT '领养结束时间',
+  `reservation` varchar(255) DEFAULT NULL COMMENT '预约数量',
+  `adoptive_energy` varchar(255) DEFAULT NULL COMMENT '领养（抢）能量',
+  `contract_days` varchar(255) DEFAULT NULL COMMENT '合约收益天数',
+  `income_ratio` varchar(255) DEFAULT NULL COMMENT '合约收益比例',
+  `pig_currency` varchar(255) DEFAULT NULL COMMENT '可挖STC数量',
+  `doge_money` varchar(255) DEFAULT NULL COMMENT '可挖DOGE数量',
+  `images` varchar(255) DEFAULT NULL COMMENT '图片',
+  `today_is_open` varchar(255) DEFAULT NULL COMMENT '0未开奖1已开奖',
+  `is_display` varchar(255) DEFAULT NULL COMMENT '是否上架，0默认为不上架，1为上架',
+  `is_lock` varchar(255) DEFAULT NULL COMMENT '决不能实时开奖的处理  今天是否锁场次 1锁0开',
+  `reset_time` datetime DEFAULT NULL COMMENT '重置时间',
+  `game_reset_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='星座表';
+-- ----------------------------
+-- Table structure for xz_goods_reservation
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_goods_reservation`;
+CREATE TABLE `xz_goods_reservation` (
+  `id` int(11) NOT NULL,
+  `goods_id` int(11) DEFAULT NULL COMMENT '星座商品编号',
+  `reservation_time` datetime DEFAULT NULL COMMENT '预约时间',
+  `reservation_status` varchar(255) DEFAULT NULL COMMENT '预约状态0未抢到1已抢到',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `pay_points` varchar(255) DEFAULT NULL COMMENT '预约消耗能量',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='星座预约记录表';
+-- ----------------------------
+-- Table structure for xz_order
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_order`;
+CREATE TABLE `xz_order` (
+  `id` int(11) NOT NULL,
+  `establish_time` datetime DEFAULT NULL COMMENT '生成订单时间',
+  `pig_order_sn` varchar(255) DEFAULT NULL COMMENT '订单编号',
+  `pay_status` varchar(255) DEFAULT NULL COMMENT '交易状态,0为冻结，1为交易中，2交易完成',
+  `sell_user_id` int(11) DEFAULT NULL COMMENT '出售人',
+  `purchase_user_id` int(11) DEFAULT NULL COMMENT '购买人',
+  `goods_name` varchar(255) DEFAULT NULL COMMENT '星座名称',
+  `goods_price` decimal(10,2) DEFAULT NULL COMMENT '星座价格',
+  `goods_id` int(11) DEFAULT NULL COMMENT '星座编号',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `appeal_time` datetime DEFAULT NULL COMMENT '申诉时间',
+  `img_url` varchar(255) DEFAULT NULL COMMENT '支付凭证',
+  `end_time` datetime DEFAULT NULL COMMENT '订单结束时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='星座订单表';
+-- ----------------------------
+-- Table structure for xz_order_appeal
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_order_appeal`;
+CREATE TABLE `xz_order_appeal` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT '申诉人id',
+  `order_id` int(11) DEFAULT NULL COMMENT '订单id',
+  `remark` varchar(255) DEFAULT NULL COMMENT '申诉原因',
+  `add_time` datetime DEFAULT NULL COMMENT '订单时间',
+  `status` varchar(255) DEFAULT NULL COMMENT '1未审核;2申诉通过;3申诉不通过',
+  `update_time` datetime DEFAULT NULL COMMENT '审核时间',
+  `complainant` varchar(255) DEFAULT NULL COMMENT '申诉人;1:买家;2卖家',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户订单申诉表';
+-- ----------------------------
+-- Table structure for xz_sms_log
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_sms_log`;
+CREATE TABLE `xz_sms_log` (
+  `id` int(11) NOT NULL,
+  `mobile` varchar(255) DEFAULT NULL COMMENT '手机号',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户表id',
+  `add_time` datetime DEFAULT NULL COMMENT '发送时间',
+  `code` varchar(255) DEFAULT NULL COMMENT '验证码',
+  `status` varchar(255) DEFAULT NULL COMMENT '发送状态,1:成功,0:失败',
+  `msg` varchar(255) DEFAULT NULL COMMENT '短信内容',
+  `scene` varchar(255) DEFAULT NULL COMMENT '发送场景,1:用户注册,2:找回密码,3:客户下单,4:客户支付,5:商家发货,6:身份验证',
+  `error_msg` varchar(255) DEFAULT NULL COMMENT '发送短信异常内容',
+  `is_check` varchar(255) DEFAULT NULL COMMENT '是否已验证',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='短信日志记录表';
+-- ----------------------------
+-- Table structure for xz_user
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_user`;
+CREATE TABLE `xz_user` (
+  `user_id` int(11) NOT NULL COMMENT 'id',
+  `user_level` varchar(255) DEFAULT NULL COMMENT '会员等级',
+  `first_leader` int(255) DEFAULT NULL COMMENT '第一上级，存id',
+  `nickname` varchar(255) DEFAULT NULL COMMENT '用户名',
+  `head_pic` varchar(255) DEFAULT NULL COMMENT '头像',
+  `password` varchar(255) DEFAULT NULL COMMENT '密码',
+  `paypwd` varchar(255) DEFAULT NULL COMMENT '二级密码',
+  `sex` varchar(255) DEFAULT NULL COMMENT '性别',
+  `mobile` varchar(255) DEFAULT NULL COMMENT '手机号',
+  `mobile_validated` varchar(255) DEFAULT NULL,
+  `user_money` varchar(255) DEFAULT NULL COMMENT '用户金额',
+  `pay_points` varchar(255) DEFAULT NULL COMMENT '用户积分',
+  `distribut_money` varchar(255) DEFAULT NULL COMMENT '佣金金额',
+  `frozen_money` varchar(255) DEFAULT NULL COMMENT '冻结金额',
+  `second_leader` int(255) DEFAULT NULL COMMENT '第二个上级，存id',
+  `third_leader` int(255) DEFAULT NULL COMMENT '第三个上级',
+  `underling_number` varchar(255) DEFAULT NULL COMMENT '用户下线数量',
+  `reg_time` datetime DEFAULT NULL COMMENT '注册时间',
+  `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
+  `last_login_ip` varchar(255) DEFAULT NULL,
+  `is_lock` varchar(255) DEFAULT NULL COMMENT '是否锁定',
+  `id_car` varchar(255) DEFAULT NULL COMMENT '身份证',
+  `real_name` varchar(255) DEFAULT NULL COMMENT '姓名',
+  `rule_sort` varchar(255) DEFAULT NULL COMMENT '排单权重',
+  `doge_money` varchar(255) DEFAULT NULL COMMENT 'DOGE币',
+  `pig_currency` varchar(255) DEFAULT NULL COMMENT 'STC币',
+  `accumulated_income` varchar(255) DEFAULT NULL COMMENT '累计收益',
+  `usermoneysalt` varchar(255) DEFAULT NULL COMMENT '给财分加盐',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='玩家用户表';
+-- ----------------------------
+-- Table structure for xz_user_goods_exclusive
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_user_goods_exclusive`;
+CREATE TABLE `xz_user_goods_exclusive` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
+  `goods_id` int(11) DEFAULT NULL COMMENT '星座id',
+  `goods_name` varchar(255) DEFAULT NULL COMMENT '星座名称',
+  `is_able_sale` varchar(255) DEFAULT NULL COMMENT '是否可出售,默认0不可出售，1可出售',
+  `price` varchar(10) DEFAULT NULL COMMENT '金额',
+  `from_user_id` int(11) DEFAULT NULL COMMENT '收购人ID',
+  `appoint_user_id` int(11) DEFAULT NULL COMMENT '指定用户ID',
+  `buy_time` datetime DEFAULT NULL COMMENT '买入时间',
+  `end_time` datetime DEFAULT NULL,
+  `pig_salt` varchar(255) DEFAULT NULL,
+  `buy_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户拥有的星座关系表';
+-- ----------------------------
+-- Table structure for xz_user_identity
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_user_identity`;
+CREATE TABLE `xz_user_identity` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
+  `real_name` varchar(255) DEFAULT NULL COMMENT '真实姓名',
+  `identity_car` varchar(255) DEFAULT NULL COMMENT '身份证号',
+  `status` varchar(255) DEFAULT NULL COMMENT '0待审核1审核通过-1审核不通过',
+  `add_time` datetime DEFAULT NULL COMMENT '添加时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户实名认证信息表';
+-- ----------------------------
+-- Table structure for xz_user_level
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_user_level`;
+CREATE TABLE `xz_user_level` (
+  `id` int(11) NOT NULL,
+  `level` varchar(255) DEFAULT NULL COMMENT '级别',
+  `name` varchar(255) DEFAULT NULL COMMENT '级别名称',
+  `reward` varchar(255) DEFAULT NULL COMMENT '奖励规则',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='会员级别表';
+-- ----------------------------
+-- Table structure for xz_user_payment
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_user_payment`;
+CREATE TABLE `xz_user_payment` (
+  `id` int(11) NOT NULL,
+  `status` varchar(255) DEFAULT NULL COMMENT '1:支付宝，2:微信，3:银行卡',
+  `account` varchar(255) DEFAULT NULL COMMENT '账号',
+  `name` varchar(255) DEFAULT NULL COMMENT '收款人',
+  `qrcode_url` varchar(255) DEFAULT NULL COMMENT '二维url',
+  `bank_name` varchar(255) DEFAULT NULL COMMENT '开户银行',
+  `bank_address` varchar(255) DEFAULT NULL COMMENT '开户行地址',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `mobile` varchar(255) DEFAULT NULL COMMENT '手机号码',
+  `paysalt` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='玩家收款账户表';
+-- ----------------------------
+-- Table structure for xz_user_recharge
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_user_recharge`;
+CREATE TABLE `xz_user_recharge` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL COMMENT '用户id',
+  `nickname` varchar(255) DEFAULT NULL COMMENT '会员昵称',
+  `order_sn` varchar(255) DEFAULT NULL COMMENT '充值单号',
+  `account` varchar(255) DEFAULT NULL COMMENT '充值金额',
+  `add_time` datetime DEFAULT NULL COMMENT '支付时间',
+  `pay_status` varchar(255) DEFAULT NULL COMMENT '充值状态0:待支付 1:充值成功 2:交易关闭',
+  `img_url` varchar(255) DEFAULT NULL COMMENT '上传支付凭证',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `verifier_time` datetime DEFAULT NULL COMMENT '审核时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户充值记录表';
+-- ----------------------------
+-- Table structure for xz_user_withdrawal
+-- ----------------------------
+DROP TABLE IF EXISTS `xz_user_withdrawal`;
+CREATE TABLE `xz_user_withdrawal` (
+  `id` int(11) NOT NULL,
+  `withdrawal_type` varchar(255) DEFAULT NULL COMMENT '提现类型，DOGE币、STC币、能量、收益等；',
+  `create_date` datetime DEFAULT NULL COMMENT '提现时间',
+  `money` varchar(255) DEFAULT NULL COMMENT '提现金额',
+  `describe` varchar(255) DEFAULT NULL COMMENT '描述',
+  `user_id` int(11) DEFAULT NULL COMMENT '提现用户',
+  `status` varchar(255) DEFAULT NULL COMMENT '提现状态，1、待审核；2、审核通过；3、审核不通过',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户提现记录表';
